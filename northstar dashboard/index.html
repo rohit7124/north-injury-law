@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Northstar Lead Desk</title>
+
+    <style>
+        :root {
+            --ink: #12202C;
+            --ink-2: #1F3A4D;
+            --ink-soft: #52616D;
+            --paper: #F6F4EF;
+            --paper-2: #EFECE3;
+            --white: #FFFFFF;
+            --line: #DEDAD1;
+            --brass: #A9814A;
+            --brass-light: #C7A46E;
+            --green: #3F735D;
+            --red: #9B4C45;
+            --shadow: 0 18px 50px rgba(18, 32, 44, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ---------- TOP BAR ---------- */
+
+        .topbar {
+            min-height: 78px;
+            background: var(--ink);
+            color: var(--white);
+            padding: 0 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-mark {
+            color: var(--brass-light);
+            font-size: 25px;
+            line-height: 1;
+        }
+
+        .brand-name {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 21px;
+            letter-spacing: .1px;
+        }
+
+        .brand-sub {
+            color: #BFC8CE;
+            font-size: 11px;
+            margin-top: 4px;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+        }
+
+        .workspace-label {
+            color: #C8D0D5;
+            font-size: 12px;
+            letter-spacing: .3px;
+        }
+
+        /* ---------- PAGE ---------- */
+
+        .page {
+            width: min(1380px, calc(100% - 72px));
+            margin: 0 auto;
+            padding: 44px 0 70px;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            color: var(--brass);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(32px, 4vw, 43px);
+            font-weight: 400;
+            letter-spacing: -.6px;
+        }
+
+        .intro {
+            margin: 9px 0 0;
+            max-width: 650px;
+            color: var(--ink-soft);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        .refresh-btn {
+            border: 1px solid var(--ink);
+            background: var(--ink);
+            color: var(--white);
+            padding: 12px 17px;
+            border-radius: 6px;
+            transition: .18s ease;
+            white-space: nowrap;
+        }
+
+        .refresh-btn:hover {
+            background: var(--ink-2);
+            transform: translateY(-1px);
+        }
+
+        /* ---------- STATS ---------- */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 26px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--line);
+            padding: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-label {
+            color: var(--ink-soft);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .stat-number {
+            margin-top: 12px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 35px;
+            line-height: 1;
+        }
+
+        .stat-accent {
+            width: 28px;
+            height: 2px;
+            background: var(--brass);
+            margin-top: 15px;
+        }
+
+        /* ---------- ALERT ---------- */
+
+        .alert {
+            display: none;
+            margin-bottom: 18px;
+            padding: 14px 16px;
+            border: 1px solid #D8AAA5;
+            background: #F8E9E7;
+            color: #743E39;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .alert.visible {
+            display: block;
+        }
+
+        /* ---------- TOOLBAR ---------- */
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            padding: 15px;
+            margin-bottom: 14px;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #89939B;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        .search {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #FCFBF9;
+            color: var(--ink);
+            padding: 11px 13px 11px 36px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: var(--brass);
+            background: var(--white);
+        }
+
+        .filter {
+            min-width: 155px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--white);
+            color: var(--ink);
+            padding: 11px 13px;
+            outline: none;
+        }
+
+        .filter:focus {
+            border-color: var(--brass);
+        }
+
+        /* ---------- TABLE ---------- */
+
+        .table-card {
+            background: var(--white);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .table-top {
+            padding: 17px 19px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 18px;
+        }
+
+        .result-count {
+            color: var(--ink-soft);
+            font-size: 12px;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #F2EFE8;
+            color: var(--ink-soft);
+            padding: 13px 18px;
+            text-align: left;
+            font-size: 10px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 17px 18px;
+            border-top: 1px solid var(--line);
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background .15s ease;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background: #FBFAF7;
+        }
+
+        tbody tr.lead-row-new td {
+            background: #FBF8F1;
+        }
+
+        .client-name {
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: 0.1px;
+        }
+
+        .client-email {
+            margin-top: 4px;
+            color: var(--ink-soft);
+            font-size: 11px;
+        }
+
+        .accident-type {
+            font-weight: 600;
+        }
+
+        .secondary {
+            margin-top: 4px;
+            color: var(--ink-soft);
+            font-size: 11px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 30px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        .status::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status-new {
+            background: #EEE7D9;
+            color: #765827;
+        }
+
+        .status-contacted {
+            background: #E5EDF1;
+            color: #31596D;
+        }
+
+        .status-qualified {
+            background: #E3EEE8;
+            color: #35634F;
+        }
+
+        .status-retained {
+            background: #E8E2F0;
+            color: #60477B;
+        }
+
+        .status-closed {
+            background: #EBEBEB;
+            color: #555;
+        }
+
+        /* ---------- EMPTY / LOADING ---------- */
+
+        .state {
+            padding: 70px 20px;
+            text-align: center;
+            color: var(--ink-soft);
+            line-height: 1.6;
+        }
+
+        .state-title {
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        /* ---------- MODAL ---------- */
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(18, 32, 44, .62);
+        }
+
+        .overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            width: min(720px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--white);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, .28);
+        }
+
+        .modal-header {
+            background: var(--ink);
+            color: var(--white);
+            padding: 25px 28px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .modal-header .eyebrow {
+            color: var(--brass-light);
+        }
+
+        .modal-title {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 27px;
+            font-weight: 400;
+        }
+
+        .close-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 50%;
+            background: transparent;
+            color: white;
+            font-size: 23px;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            border-color: var(--brass-light);
+            color: var(--brass-light);
+        }
+
+        .modal-body {
+            padding: 28px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .detail-section {
+            margin-bottom: 22px;
+        }
+
+        .detail-section.full {
+            grid-column: 1 / -1;
+        }
+
+        .detail-label {
+            margin-bottom: 7px;
+            color: var(--brass);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            color: var(--ink);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .description {
+            background: var(--paper);
+            border-left: 3px solid var(--brass);
+            padding: 16px;
+        }
+
+        /* ---------- KEY MODAL ---------- */
+
+        .key-modal {
+            width: min(430px, 100%);
+            background: var(--white);
+            padding: 30px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, .28);
+        }
+
+        .key-modal h2 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 25px;
+            font-weight: 400;
+        }
+
+        .key-modal p {
+            color: var(--ink-soft);
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 10px 0 18px;
+        }
+
+        .key-input {
+            width: 100%;
+            border: 1px solid var(--line);
+            padding: 12px;
+            outline: none;
+        }
+
+        .key-input:focus {
+            border-color: var(--brass);
+        }
+
+        .key-connect {
+            width: 100%;
+            margin-top: 12px;
+            border: 0;
+            border-radius: 6px;
+            background: var(--ink);
+            color: white;
+            padding: 13px;
+        }
+
+        .key-connect:hover {
+            background: var(--ink-2);
+        }
+
+        /* ---------- MOBILE ---------- */
+
+        @media (max-width: 900px) {
+
+            .page {
+                width: min(100% - 36px, 700px);
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter {
+                width: 100%;
+            }
+
+        }
+
+        @media (max-width: 560px) {
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .workspace-label {
+                display: none;
+            }
+
+            .page {
+                width: calc(100% - 28px);
+                padding-top: 30px;
+            }
+
+            h1 {
+                font-size: 31px;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 17px;
+            }
+
+            .stat-number {
+                font-size: 29px;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .detail-section.full {
+                grid-column: auto;
+            }
+
+            .modal-body {
+                padding: 22px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">✦</div>
+
+            <div>
+                <div class="brand-name">Northstar Lead Desk</div>
+                <div class="brand-sub">Personal Injury Intake</div>
+            </div>
+
+        </div>
+
+        <div class="workspace-label">
+            Internal workspace
+        </div>
+
+    </header>
+
+
+    <main class="page">
+
+        <section class="page-heading">
+
+            <div>
+                <div class="eyebrow">Lead Management</div>
+
+                <h1>Potential Cases</h1>
+
+                <p class="intro">
+                    Review incoming case evaluations, understand each potential client,
+                    and keep your intake pipeline organized.
+                </p>
+            </div>
+
+            <button class="refresh-btn" id="refreshBtn">
+                Refresh Leads
+            </button>
+
+        </section>
+
+
+        <div class="alert" id="alertBox"></div>
+
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-label">Total Leads</div>
+                <div class="stat-number" id="totalCount">—</div>
+                <div class="stat-accent"></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">New</div>
+                <div class="stat-number" id="newCount">—</div>
+                <div class="stat-accent"></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Contacted</div>
+                <div class="stat-number" id="contactedCount">—</div>
+                <div class="stat-accent"></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Qualified</div>
+                <div class="stat-number" id="qualifiedCount">—</div>
+                <div class="stat-accent"></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Retained</div>
+                <div class="stat-number" id="retainedCount"></div>
+                <div class="stat-accent"></div>
+            </div>
+
+        </section>
+        <section class="performance-section">
+            <div class="performance-header">
+                <div>
+                    <div class="section-kicker">Performance</div>
+                    <h2>Intake Performance</h2>
+                </div>
+                <div class="performance-caption">
+                    Track how quickly and effectively new opportunities move through intake.
+                </div>
+            </div>
+
+            <div class="performance-grid">
+                <div class="performance-card">
+                    <div class="performance-label">Average Response Time</div>
+                    <div class="performance-value" id="averageResponseTime">—</div>
+                    <div class="performance-description">
+                        Average time from lead submission to first contact.
+                    </div>
+                </div>
+
+                <div class="performance-card">
+                    <div class="performance-label">Awaiting Contact</div>
+                    <div class="performance-value" id="awaitingContactCount">—</div>
+                    <div class="performance-description">
+                        New leads that have not received a first contact yet.
+                    </div>
+                </div>
+
+                <div class="performance-card">
+                    <div class="performance-label">Lead → Retained</div>
+                    <div class="performance-value" id="retainedRate">—</div>
+                    <div class="performance-description">
+                        Percentage of leads that have been retained.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <section class="toolbar">
+
+            <div class="search-wrap">
+
+                <span class="search-icon">⌕</span>
+
+                <input class="search" id="searchInput" type="search" placeholder="Search potential clients..."
+                    autocomplete="off">
+
+            </div>
+
+
+            <select class="filter" id="statusFilter">
+
+                <option value="all">All statuses</option>
+                <option value="new">New</option>
+                <option value="contacted">Contacted</option>
+                <option value="qualified">Qualified</option>
+                <option value="retained">Retained</option>
+                <option value="closed">Closed</option>
+
+            </select>
+
+        </section>
+
+
+        <section class="table-card">
+
+            <div class="table-top">
+
+                <div class="table-title">
+                    Recent Intake
+                </div>
+
+                <div class="result-count" id="resultCount">
+                    Loading...
+                </div>
+
+            </div>
+
+
+            <div class="table-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Potential Client</th>
+                            <th>Accident</th>
+                            <th>Date</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="leadTable">
+
+                        <tr>
+
+                            <td colspan="5">
+
+                                <div class="state">
+                                    Loading leads...
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- LEAD DETAIL MODAL -->
+
+    <div class="overlay" id="detailOverlay">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Potential Case
+                    </div>
+
+                    <h2 class="modal-title" id="detailName">
+                        Lead
+                    </h2>
+
+                </div>
+
+                <button class="close-btn" id="closeDetail">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="detail-grid">
+
+                    <div class="detail-section">
+
+                        <div class="detail-label">
+                            Contact
+                        </div>
+
+                        <div class="detail-value" id="detailContact">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-section">
+
+                        <div class="detail-label">
+                            Preferred Method
+                        </div>
+
+                        <div class="detail-value" id="detailMethod">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-section">
+
+                        <div class="detail-label">
+                            Accident
+                        </div>
+
+                        <div class="detail-value" id="detailAccident">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-section">
+
+                        <div class="detail-label">
+                            Received
+                        </div>
+
+                        <div class="detail-value" id="detailCreated">
+                            —
+                        </div>
+
+                    </div>
+
+                    <div class="detail-section">
+
+                        <div class="detail-label">
+                            First Contact
+                        </div>
+
+                        <div class="detail-value" id="detailContacted">
+                            Awaiting first contact
+                        </div>
+
+                    </div>
+
+                    <div class="detail-section">
+
+                        <div class="detail-label">
+                            Response Time
+                        </div>
+
+                        <div class="detail-value" id="detailResponseTime">
+                            —
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="detail-section full">
+
+                        <div class="detail-label">
+                            What Happened
+                        </div>
+
+                        <div class="detail-value description" id="detailDescription">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-section">
+                        <div class="detail-label">Internal Notes</div>
+
+                        <textarea id="detailNotes" class="notes-input"
+                            placeholder="Add internal notes about this lead..." rows="4"></textarea>
+
+                        <button type="button" class="notes-save-btn" onclick="saveLeadNotes()">
+                            Save Notes
+                        </button>
+
+                        <div id="notesMessage" class="notes-message"></div>
+                    </div>
+                    <div class="detail-section">
+
+                        <div class="detail-label">
+                            Current Status
+                        </div>
+
+                        <div class="detail-value" id="detailStatus">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- API KEY MODAL -->
+
+    <div class="overlay" id="keyOverlay">
+
+        <div class="key-modal">
+
+            <h2>Connect Lead Desk</h2>
+
+            <p>
+                Enter the internal API key to connect this dashboard
+                to the Northstar lead database.
+            </p>
+
+            <input class="key-input" id="apiKeyInput" type="password" placeholder="Internal API key" autocomplete="off">
+
+            <button class="key-connect" id="connectBtn">
+                Connect
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const API_BASE = "http://localhost:8000";
+
+        let leads = [];
+
+        let apiKey =
+            sessionStorage.getItem("northstar_api_key") || "";
+
+
+        const leadTable =
+            document.getElementById("leadTable");
+
+        const totalCount =
+            document.getElementById("totalCount");
+
+        const newCount =
+            document.getElementById("newCount");
+
+        const contactedCount =
+            document.getElementById("contactedCount");
+
+        const qualifiedCount =
+            document.getElementById("qualifiedCount");
+
+        const resultCount =
+            document.getElementById("resultCount");
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const statusFilter =
+            document.getElementById("statusFilter");
+
+        const alertBox =
+            document.getElementById("alertBox");
+
+        const detailOverlay =
+            document.getElementById("detailOverlay");
+
+        const keyOverlay =
+            document.getElementById("keyOverlay");
+
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        function showAlert(message) {
+
+            alertBox.textContent = message;
+
+            alertBox.classList.add("visible");
+
+        }
+
+
+        function hideAlert() {
+
+            alertBox.textContent = "";
+
+            alertBox.classList.remove("visible");
+
+        }
+
+
+        function formatAccidentType(value) {
+
+            if (!value) return "Not specified";
+
+            return String(value)
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, char => char.toUpperCase());
+
+        }
+
+
+        function formatDate(value) {
+
+            if (!value) return "Not provided";
+
+            const date =
+                new Date(value + "T00:00:00");
+
+            if (Number.isNaN(date.getTime())) {
+                return value;
+            }
+
+            return date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+            });
+
+        }
+
+
+        function formatCreated(value) {
+
+            if (!value) return "Not available";
+
+            const date =
+                new Date(String(value).replace(" ", "T") + "Z");
+
+            if (Number.isNaN(date.getTime())) {
+                return value;
+            }
+
+            return date.toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "2-digit"
+            });
+
+        }
+
+        function formatResponseTime(createdAt, contactedAt) {
+            if (!createdAt || !contactedAt) {
+                return "Awaiting first contact";
+            }
+
+            const created = new Date(
+                String(createdAt).replace(" ", "T") + "Z"
+            );
+
+            const contacted = new Date(
+                String(contactedAt).replace(" ", "T") + "Z"
+            );
+
+            if (
+                Number.isNaN(created.getTime()) ||
+                Number.isNaN(contacted.getTime())
+            ) {
+                return "Not available";
+            }
+
+            const differenceMs = contacted.getTime() - created.getTime();
+
+            if (differenceMs < 0) {
+                return "Not available";
+            }
+
+            const totalMinutes = Math.floor(
+                differenceMs / (1000 * 60)
+            );
+
+            if (totalMinutes < 1) {
+                return "Under 1 min";
+            }
+
+            if (totalMinutes < 60) {
+                return `${totalMinutes} min`;
+            }
+
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+
+            if (hours < 24) {
+                return minutes > 0
+                    ? `${hours}h ${minutes}m`
+                    : `${hours}h`;
+            }
+
+            const days = Math.floor(hours / 24);
+            const remainingHours = hours % 24;
+
+            return remainingHours > 0
+                ? `${days}d ${remainingHours}h`
+                : `${days}d`;
+        }
+
+
+        function statusClass(status) {
+
+            const allowed = [
+                "new",
+                "contacted",
+                "qualified",
+                "retained",
+                "closed"
+            ];
+
+            return allowed.includes(status)
+                ? "status-" + status
+                : "status-new";
+
+        }
+
+
+        function statusBadge(status) {
+
+            const safeStatus =
+                status || "new";
+
+            return `
+        <span class="status ${statusClass(safeStatus)}">
+          ${escapeHtml(safeStatus)}
+        </span>
+      `;
+
+        }
+
+
+        function updateStats() {
+            totalCount.textContent = leads.length;
+
+            newCount.textContent =
+                leads.filter(
+                    lead => lead.status === "new"
+                ).length;
+
+            contactedCount.textContent =
+                leads.filter(
+                    lead => lead.status === "contacted"
+                ).length;
+
+            qualifiedCount.textContent =
+                leads.filter(
+                    lead => lead.status === "qualified"
+                ).length;
+
+            retainedCount.textContent =
+                leads.filter(
+                    lead => lead.status === "retained"
+                ).length;
+
+
+            // -----------------------------
+            // Response performance
+            // -----------------------------
+
+            const awaitingContact = leads.filter(
+                lead =>
+                    lead.status === "new" &&
+                    !lead.contacted_at
+            ).length;
+
+            awaitingContactCount.textContent =
+                awaitingContact;
+
+
+            const responseTimes = leads
+                .filter(
+                    lead =>
+                        lead.created_at &&
+                        lead.contacted_at
+                )
+                .map(lead => {
+                    const received = new Date(
+                        String(lead.created_at).replace(" ", "T") + "Z"
+                    );
+
+                    const contacted = new Date(
+                        String(lead.contacted_at).replace(" ", "T") + "Z"
+                    );
+
+                    if (
+                        Number.isNaN(received.getTime()) ||
+                        Number.isNaN(contacted.getTime())
+                    ) {
+                        return null;
+                    }
+
+                    const minutes =
+                        (contacted - received) / 60000;
+
+                    return minutes >= 0 ? minutes : null;
+                })
+                .filter(
+                    minutes => minutes !== null
+                );
+
+
+            if (responseTimes.length === 0) {
+                averageResponseTime.textContent = "—";
+            } else {
+                const average =
+                    responseTimes.reduce(
+                        (sum, minutes) => sum + minutes,
+                        0
+                    ) / responseTimes.length;
+
+                if (average < 60) {
+                    averageResponseTime.textContent =
+                        `${Math.round(average)} min`;
+                } else {
+                    const hours = Math.floor(average / 60);
+                    const minutes = Math.round(average % 60);
+
+                    averageResponseTime.textContent =
+                        minutes === 0
+                            ? `${hours} hr`
+                            : `${hours} hr ${minutes} min`;
+                }
+            }
+
+
+            // -----------------------------
+            // Retention performance
+            // -----------------------------
+
+            if (leads.length === 0) {
+                retainedRate.textContent = "—";
+            } else {
+                const retained =
+                    leads.filter(
+                        lead => lead.status === "retained"
+                    ).length;
+
+                const rate =
+                    (retained / leads.length) * 100;
+
+                retainedRate.textContent =
+                    `${rate.toFixed(1)}%`;
+            }
+        }
+        function getApiKey() {
+            const key = sessionStorage.getItem("northstar_api_key");
+
+            if (key) {
+                return key;
+            }
+
+            const enteredKey = prompt("Enter your admin API key:");
+
+            if (!enteredKey) {
+                return "";
+            }
+
+            sessionStorage.setItem("northstar_api_key", enteredKey);
+
+            return enteredKey;
+        }
+        async function updateLeadStatus(leadId, newStatus) {
+            if (!leadId || !newStatus) return;
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/api/leads/${leadId}/status`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-API-Key": getApiKey(),
+                        },
+                        body: JSON.stringify({
+                            status: newStatus,
+                        }),
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`Status update failed (${response.status})`);
+                }
+
+                const updatedLead = await response.json();
+
+                const lead = leads.find(
+                    (item) => Number(item.id) === Number(leadId)
+                );
+
+                if (lead) {
+                    lead.status = updatedLead.status;
+                }
+
+                updateStats();
+                renderLeads();
+
+                const leadInList = leads.find(
+                    lead => Number(lead.id) === Number(leadId)
+                );
+
+                if (leadInList) {
+                    leadInList.status = updatedLead.status;
+                }
+
+
+
+            } catch (error) {
+                console.error("Status update error:", error);
+                alert("Could not update the lead status. Please try again.");
+            }
+        }
+
+        function getFilteredLeads() {
+
+            const search =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            const filter =
+                statusFilter.value;
+
+
+            return leads.filter(lead => {
+
+                const searchableText = [
+
+                    lead.first_name,
+                    lead.last_name,
+                    lead.email,
+                    lead.phone,
+                    lead.accident_type,
+                    lead.description
+
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const matchesSearch =
+                    !search ||
+                    searchableText.includes(search);
+
+
+                const matchesStatus =
+                    filter === "all" ||
+                    lead.status === filter;
+
+
+                return matchesSearch &&
+                    matchesStatus;
+
+            });
+
+        }
+
+
+        function renderLeads() {
+
+            const filtered =
+                getFilteredLeads();
+
+
+            resultCount.textContent =
+                `${filtered.length} ${filtered.length === 1
+                    ? "lead"
+                    : "leads"
+                }`;
+
+
+            if (!filtered.length) {
+
+                leadTable.innerHTML = `
+
+          <tr>
+
+            <td colspan="5">
+
+              <div class="state">
+
+                <div class="state-title">
+                  No leads found
+                </div>
+
+                Try changing your search
+                or status filter.
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        `;
+
+                return;
+
+            }
+
+
+            leadTable.innerHTML =
+                filtered.map(lead => `
+
+          <tr
+             data-lead-id="${lead.id}"
+           class="${lead.status === 'new' ? 'lead-row-new' : ''}"
+             >
+
+            <td>
+
+              <div class="client-name">
+                ${escapeHtml(
+                    lead.first_name
+                )}
+                ${escapeHtml(
+                    lead.last_name
+                )}
+              </div>
+
+              <div class="client-email">
+                ${escapeHtml(
+                    lead.email
+                )}
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="accident-type">
+                ${escapeHtml(
+                    formatAccidentType(
+                        lead.accident_type
+                    )
+                )}
+              </div>
+
+            </td>
+
+
+            <td>
+              ${escapeHtml(
+                    formatDate(
+                        lead.accident_date
+                    )
+                )}
+            </td>
+
+
+            <td>
+
+              <div>
+                ${escapeHtml(
+                    lead.phone
+                )}
+              </div>
+
+              <div class="secondary">
+                ${escapeHtml(
+                    lead.contact_method ||
+                    "No preference"
+                )}
+              </div>
+
+            </td>
+
+
+            <td>
+              ${statusBadge(lead.status)}
+            </td>
+
+          </tr>
+
+        `).join("");
+
+
+            leadTable
+                .querySelectorAll("tr[data-lead-id]")
+                .forEach(row => {
+
+                    row.addEventListener("click", () => {
+
+                        const id =
+                            Number(row.dataset.leadId);
+
+                        openDetail(id);
+
+                    });
+
+                });
+
+        }
+
+
+        function openDetail(id) {
+            currentLeadId = id;
+
+            const lead =
+                leads.find(
+                    item => item.id === id
+                );
+
+            if (!lead) return;
+
+
+            document.getElementById(
+                "detailName"
+            ).textContent =
+                `${lead.first_name} ${lead.last_name}`;
+
+
+            document.getElementById(
+                "detailContact"
+            ).innerHTML =
+                `${escapeHtml(
+                    lead.phone
+                )}<br>${escapeHtml(
+                    lead.email
+                )}`;
+
+
+            document.getElementById(
+                "detailMethod"
+            ).textContent =
+                lead.contact_method ||
+                "Not specified";
+
+
+            document.getElementById(
+                "detailAccident"
+            ).textContent =
+                `${formatAccidentType(
+                    lead.accident_type
+                )} — ${formatDate(
+                    lead.accident_date
+                )}`;
+
+
+            document.getElementById(
+                "detailCreated"
+            ).textContent =
+                formatCreated(
+                    lead.created_at
+                );
+
+            document.getElementById(
+                "detailContacted"
+            ).textContent =
+                lead.contacted_at
+                    ? formatCreated(lead.contacted_at)
+                    : "Awaiting first contact";
+
+            document.getElementById(
+                "detailResponseTime"
+            ).textContent =
+                formatResponseTime(
+                    lead.created_at,
+                    lead.contacted_at
+                );
+
+
+            document.getElementById(
+                "detailDescription"
+            ).textContent =
+                lead.description ||
+                "No description provided.";
+            document.getElementById("detailNotes").value =
+                lead.notes || "";
+
+
+            document.getElementById("detailStatus").innerHTML = `
+    <select class="status-select"
+            onchange="updateLeadStatus(${lead.id}, this.value)">
+        <option value="new" ${lead.status === "new" ? "selected" : ""}>New</option>
+        <option value="contacted" ${lead.status === "contacted" ? "selected" : ""}>Contacted</option>
+        <option value="qualified" ${lead.status === "qualified" ? "selected" : ""}>Qualified</option>
+        <option value="retained" ${lead.status === "retained" ? "selected" : ""}>Retained</option>
+        <option value="closed" ${lead.status === "closed" ? "selected" : ""}>Closed</option>
+        <option value="lost" ${lead.status === "lost" ? "selected" : ""}>Lost</option>
+    </select>
+`;
+
+
+            detailOverlay.classList.add("open");
+        }
+
+
+        async function saveLeadNotes() {
+            if (!currentLeadId) return;
+
+            const notesInput = document.getElementById("detailNotes");
+            const message = document.getElementById("notesMessage");
+
+            if (!notesInput || !message) return;
+
+            const notes = notesInput.value.trim();
+
+            message.textContent = "Saving...";
+            message.className = "notes-message";
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/api/leads/${currentLeadId}/notes`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-API-Key": getApiKey(),
+                        },
+                        body: JSON.stringify({
+                            notes: notes,
+                        }),
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`Notes update failed (${response.status})`);
+                }
+
+                const updatedLead = await response.json();
+
+                const lead = leads.find(
+                    (item) => Number(item.id) === Number(currentLeadId)
+                );
+
+                if (lead) {
+                    lead.notes = updatedLead.notes;
+                }
+
+                message.textContent = "Notes saved";
+                message.className = "notes-message success";
+
+                setTimeout(() => {
+                    message.textContent = "";
+                    message.className = "notes-message";
+                }, 2500);
+
+            } catch (error) {
+                console.error("Notes update error:", error);
+
+                message.textContent = "Could not save notes";
+                message.className = "notes-message error";
+            }
+        }
+
+        function closeDetail() {
+
+            detailOverlay.classList.remove("open");
+
+        }
+
+
+        async function loadLeads() {
+
+            hideAlert();
+
+
+            if (!apiKey) {
+
+                keyOverlay.classList.add("open");
+
+                return;
+
+            }
+
+
+            const refreshBtn =
+                document.getElementById("refreshBtn");
+
+            refreshBtn.disabled = true;
+
+            refreshBtn.textContent =
+                "Refreshing...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        API_BASE + "/api/leads",
+                        {
+                            method: "GET",
+                            headers: {
+                                "X-API-Key": apiKey
+                            }
+                        }
+                    );
+
+
+                if (response.status === 401) {
+
+                    apiKey = "";
+
+                    sessionStorage.removeItem(
+                        "northstar_api_key"
+                    );
+
+                    showAlert(
+                        "The API key was rejected. Please enter the correct key."
+                    );
+
+                    keyOverlay.classList.add("open");
+
+                    return;
+
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Server returned " +
+                        response.status
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                leads =
+                    Array.isArray(data.leads)
+                        ? data.leads
+                        : [];
+
+
+                updateStats();
+
+                renderLeads();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showAlert(
+                    "Could not connect to the Northstar backend. Make sure the FastAPI server is running."
+                );
+
+
+                leadTable.innerHTML = `
+
+          <tr>
+
+            <td colspan="5">
+
+              <div class="state">
+
+                <div class="state-title">
+                  Connection unavailable
+                </div>
+
+                Start the Northstar backend
+                and click Refresh Leads.
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        `;
+
+
+                resultCount.textContent =
+                    "Unavailable";
+
+            } finally {
+
+                refreshBtn.disabled = false;
+
+                refreshBtn.textContent =
+                    "Refresh Leads";
+
+            }
+
+        }
+
+
+        document
+            .getElementById("refreshBtn")
+            .addEventListener(
+                "click",
+                loadLeads
+            );
+
+
+        document
+            .getElementById("connectBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    const input =
+                        document.getElementById(
+                            "apiKeyInput"
+                        );
+
+                    const value =
+                        input.value.trim();
+
+
+                    if (!value) {
+
+                        input.focus();
+
+                        return;
+
+                    }
+
+
+                    apiKey = value;
+
+                    sessionStorage.setItem(
+                        "northstar_api_key",
+                        apiKey
+                    );
+
+
+                    keyOverlay.classList.remove(
+                        "open"
+                    );
+
+
+                    loadLeads();
+
+                }
+            );
+
+
+        document
+            .getElementById("closeDetail")
+            .addEventListener(
+                "click",
+                closeDetail
+            );
+
+
+        detailOverlay.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    detailOverlay
+                ) {
+                    closeDetail();
+                }
+
+            }
+        );
+
+
+        keyOverlay.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    keyOverlay
+                ) {
+                    // Intentionally do nothing.
+                    // The dashboard requires an API key.
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Escape"
+                ) {
+                    closeDetail();
+                }
+
+            }
+        );
+
+
+        searchInput.addEventListener(
+            "input",
+            renderLeads
+        );
+
+
+        statusFilter.addEventListener(
+            "change",
+            renderLeads
+        );
+
+
+        if (apiKey) {
+
+            loadLeads();
+
+        } else {
+
+            setTimeout(
+                () => keyOverlay.classList.add("open"),
+                250
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
